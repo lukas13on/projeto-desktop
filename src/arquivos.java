@@ -2,6 +2,7 @@ package src;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class arquivos {
@@ -10,16 +11,42 @@ public class arquivos {
 
     }
 
-    public static void apagarArquivo() {
-
-    }
-
-    public static void escreverArquivo() {
-
+    /**
+     * Apaga um arquivo
+     * 
+     * @param nomeArquivo
+     * @return boolean
+     */
+    public static boolean apagarArquivo(String nomeArquivo) {
+        File arquivo = new File(nomeArquivo);
+        if (arquivo.delete()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
-     * Cria um arquivo com o nome e dados.
+     * Escreve em um arquivo
+     * 
+     * @param nomeArquivo
+     * @param dadosArquivo
+     * @throws Exception
+     * @return boolean
+     */
+    public static boolean escreverArquivo(String nomeArquivo, String dadosArquivo) throws Exception {
+        try {
+            FileWriter escritora = new FileWriter(nomeArquivo);
+            escritora.write(dadosArquivo);
+            escritora.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Cria um arquivo
      * 
      * @param nomeArquivo
      * @param dadosArquivo
@@ -38,19 +65,18 @@ public class arquivos {
                 criado = true;
             }
 
-            if (dadosArquivo != "") {
+            if (dadosArquivo != "" || dadosArquivo != null) {
 
             }
 
             return criado;
-
         } else {
             return true;
         }
     }
 
     /**
-     * Determina se um arquivo existe.
+     * Determina se um arquivo existe
      * 
      * @param nomeArquivo
      * @throws Exception
