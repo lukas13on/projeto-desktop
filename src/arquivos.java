@@ -4,10 +4,33 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class arquivos {
 
-    public static void lerArquivo() {
+    static String pastaBase = "arquivos/";
+
+    /**
+     * Le um arquivo
+     * 
+     * @param nomeArquivo
+     */
+    public static String lerArquivo(String nomeArquivo) throws Exception {
+        try {
+
+            File arquivo = new File(nomeArquivo);
+            Scanner entrada = new Scanner(arquivo);
+            String dados = "";
+
+            while (entrada.hasNextLine()) {
+                dados = dados.concat(entrada.nextLine());
+            }
+
+            entrada.close();
+            return dados;
+        } catch (FileNotFoundException e) {
+            return null;
+        }
 
     }
 
@@ -66,7 +89,8 @@ public class arquivos {
             }
 
             if (dadosArquivo != "" || dadosArquivo != null) {
-
+                preenchido = escreverArquivo(nomeArquivo, dadosArquivo);
+                return criado && preenchido;
             }
 
             return criado;

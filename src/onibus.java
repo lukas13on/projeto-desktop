@@ -4,6 +4,10 @@ import java.util.Scanner;
 
 public class onibus {
 
+    public static boolean criarOnibus() {
+        return true;
+    }
+
     public static int escolhaAssento() {
 
         Scanner entrada = new Scanner(System.in);

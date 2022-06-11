@@ -1,5 +1,7 @@
 import src.onibus;
+import src.utilidades;
 import src.linhas;
+import src.menu;
 import src.arquivos;
 
 public class main {
@@ -21,19 +23,18 @@ public class main {
          * }
          */
 
-        // TESTE CRIAR ARQUIVO - QUASE TERMINAR NA SALA
+        // TESTE CRIAR ARQUIVO - OK
         // ----------------------------------------------------------
         /**
          * String nomeArquivo = "arquivos/testedois.csv";
          * String dadosArquivo = "teste";
-         * Boolean criado = arquivos.criarArquivo(nomeArquivo, "");
+         * Boolean criado = arquivos.criarArquivo(nomeArquivo, dadosArquivo);
          * if (criado) {
          * System.out.println("Arquivo criado");
          * } else {
          * System.out.println("Arquivo não criado");
          * }
          */
-
         // TESTE ESCREVER ARQUIVO - OK
         // ----------------------------------------------------------
         /**
@@ -59,5 +60,15 @@ public class main {
          * }
          */
 
+        // TESTE LER ARQUIVO - OK
+        // ----------------------------------------------------------
+        /**
+         * String nomeArquivo = "arquivos/teste.csv";
+         * String dados = arquivos.lerArquivo(nomeArquivo);
+         * System.out.println(dados);
+         */
+        // utilidades.limparConsole(0);
+        // linhas.criarLinha();
+        menu.confirmarAcao("titulo", "descricao");
     }
 }
