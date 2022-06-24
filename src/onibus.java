@@ -33,6 +33,7 @@ public class onibus {
             String horario = null;
             int assentoEscolhido = -1;
             int horarioEscolhido = -1;
+            String assento;
             List<String> linhas = new ArrayList<String>();
             String assentos[];
 
@@ -91,7 +92,7 @@ public class onibus {
             }
 
             for (posicao = 0; posicao < assentos.length; posicao++) {
-                String assento = assentos[posicao];
+                assento = assentos[posicao];
                 String pos = Integer.toString(posicao);
                 String assentoCodigo = posicao >= 10 ? pos : "0" + pos;
                 String estado = onibus.assentoVago(assento) ? "Vago  " : "Ocupado";
@@ -99,6 +100,29 @@ public class onibus {
             }
 
             utilidades.divisorConsole();
+
+            while (assentoEscolhido == -1) {
+                System.out.println("Informe o código do assento:");
+                assentoEscolhido = entrada.nextInt();
+                if (assentoEscolhido >= 0 && assentoEscolhido < assentos.length) {
+                    assento = assentos[assentoEscolhido];
+                    if (onibus.assentoOcupado(assento)) {
+                        assentoEscolhido = -1;
+                        System.out.println("Assento ocupado: [" + assentoEscolhido + "]");
+                    } else {
+                        assentos[assentoEscolhido] = "1";
+                    }
+                } else {
+                    assentoEscolhido = -1;
+                }
+            }
+
+            System.out.println("Escolhido: " + assentoEscolhido);
+            utilidades.divisorConsole();
+
+            for (String test : assentos) {
+                System.out.println(test);
+            }
 
             // System.out.println(dadosLinha);
             return null;
