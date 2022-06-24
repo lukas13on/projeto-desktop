@@ -6,7 +6,6 @@ public class menu {
 
     public static boolean confirmarAcao(String titulo, String descricao) throws InterruptedException {
         String valor;
-        Boolean confirmado = false;
         Boolean selecionado = false;
         Scanner entrada = new Scanner(System.in);
 
@@ -15,29 +14,25 @@ public class menu {
             utilidades.limparConsole(0);
 
             utilidades.divisorConsole();
-            System.out.println("-------Deseja confirmar sua ação?-------");
+            System.out.println("Deseja confirmar sua ação?");
             utilidades.divisorConsole();
-            System.out.println("--------------(S)im-|-(N)ão-------------");
+            System.out.println("--------------[S]im-|-[N]ão-------------");
             utilidades.divisorConsole();
 
-            valor = entrada.next();
+            valor = entrada.nextLine();
             valor = valor.trim().toLowerCase();
 
-            System.out.println(valor);
+            System.out.println();
 
-            if (valor == "s" || valor == "sim") {
-                selecionado = true;
-                System.out.println("sim");
-                // return true;
-            } else if (valor == "n" || valor == "nao" || valor == "não") {
-                // return false;
-                selecionado = true;
-                System.out.println("nao");
-            } else {
-                System.out.println("else");
-                /** .... */
+            if (utilidades.textoIgual("s", valor)) {
+                return true;
+            } else if (utilidades.textoIgual("n", valor)) {
+                return false;
             }
+
         }
+
+        System.out.println("sai");
 
         return true;
 

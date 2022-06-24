@@ -67,8 +67,22 @@ public class main {
          * String dados = arquivos.lerArquivo(nomeArquivo);
          * System.out.println(dados);
          */
-        // utilidades.limparConsole(0);
-        // linhas.criarLinha();
-        menu.confirmarAcao("titulo", "descricao");
+
+        // TESTE MENU CONFIRMAR - OK
+        // ----------------------------------------------------------
+        // boolean test = menu.confirmarAcao("titulo", "descricao");
+        // System.out.println(test);
+
+        // TESTE PROCURAR ARQUIVOS - OK
+        // ----------------------------------------------------------
+        // String nomePasta = "arquivos/";
+        // String termo = "*.csv";
+        // System.out.println(arquivos.procurarArquivos(nomePasta, termo));
+
+        // TESTE PEGA LINHAS - OK
+        // ----------------------------------------------------------
+        // String linha = linhas.pegaLinhas();
+        // System.out.println(linha);
+        onibus.escolherAssento();
     }
 }

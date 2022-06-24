@@ -13,4 +13,12 @@ public class utilidades {
     public static void divisorConsole() {
         System.out.println("----------------------------------------");
     }
+
+    public static void tituloConsole(String texto) {
+        System.out.println(">>> " + texto);
+    }
+
+    public static boolean textoIgual(String textoA, String textoB) {
+        return new String(textoA).equals(textoB);
+    }
 }

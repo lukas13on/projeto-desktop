@@ -4,6 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class arquivos {
@@ -112,6 +118,29 @@ public class arquivos {
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Retorna um array com o resultado da pesquisa
+     * 
+     * @param nomePasta
+     * @param termo
+     * @return
+     * @throws IOException
+     */
+    public static List<String> procurarArquivos(String nomePasta, String termo) throws IOException {
+        Path pasta = Paths.get(nomePasta);
+        List<String> list = new ArrayList<String>();
+        try (DirectoryStream<Path> paths = Files.newDirectoryStream(pasta, termo)) {
+
+            for (Path path : paths) {
+                list.add(path.toString());
+            }
+
+            return list;
+        } catch (IOException e) {
+            return null;
         }
     }
 
