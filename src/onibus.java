@@ -22,11 +22,20 @@ public class onibus {
 
     public static String escolherAssento() throws Exception {
         try {
-            String arquivoLinha = linhas.escolherLinha();
+            utilidades.limparConsole(0);
+            List<String> escolhaLinha = linhas.escolherLinha();
+            int codLinha = Integer.parseInt(escolhaLinha.get(0));
+            String arquivoLinha = escolhaLinha.get(1);
+            System.out.println(codLinha);
+            System.out.println(arquivoLinha);
+            /**
+             * if (true) {
+             * return null;
+             * }
+             */
             File arquivo = new File(arquivoLinha);
             Scanner entrada = new Scanner(System.in);
             Scanner dados = new Scanner(arquivo);
-            int posicaoLinha = 0;
             int posicao;
             String horarioLinha = null;
             String assentosLinha = null;
@@ -36,6 +45,8 @@ public class onibus {
             String assento;
             List<String> linhas = new ArrayList<String>();
             String assentos[];
+            String linhaAlterada = null;
+            String assentoAlterado = null;
 
             dados.useDelimiter("\n");
 
@@ -46,7 +57,6 @@ public class onibus {
             while (dados.hasNext()) {
                 String linha = dados.next();
                 linhas.add(linha);
-
             }
 
             utilidades.divisorConsole();
@@ -120,8 +130,19 @@ public class onibus {
             System.out.println("Escolhido: " + assentoEscolhido);
             utilidades.divisorConsole();
 
-            for (String test : assentos) {
-                System.out.println(test);
+            assentoAlterado = String.join(".", assentos);
+            linhaAlterada = horario + "," + assentoAlterado;
+
+            utilidades.divisorConsole();
+            System.out.println(linhaAlterada);
+            utilidades.divisorConsole();
+
+            int test[] = { 0, 0, 0, 1, 0, 1, 1 };
+
+            linhas.set(codLinha, linhaAlterada);
+
+            for (String linha : linhas) {
+                System.out.println(linha);
             }
 
             // System.out.println(dadosLinha);

@@ -72,7 +72,14 @@ public class linhas {
         return linha;
     }
 
-    public static String escolherLinha() throws IOException, InterruptedException {
+    /**
+     * Retorna o codigo da linha escolhida
+     * 
+     * @return String
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public static List<String> escolherLinha() throws IOException, InterruptedException {
         try {
 
             Scanner entrada = new Scanner(System.in);
@@ -82,9 +89,10 @@ public class linhas {
             List<String> partidas = new ArrayList<String>();
             List<String> destinos = new ArrayList<String>();
             int codigoEscolhido = -1;
-            String linhaEscolhida = null;
+            Boolean linhaEscolhida = false;
             String partida = null;
             String destino = null;
+            List<String> despachaDados = new ArrayList<String>();
             int posicao;
 
             utilidades.limparConsole(0);
@@ -115,12 +123,14 @@ public class linhas {
                 utilidades.divisorConsole();
             }
 
-            while (linhaEscolhida == null) {
+            while (!linhaEscolhida) {
                 System.out.println("Informe o código da linha:");
                 codigoEscolhido = entrada.nextInt();
 
                 if (codigoEscolhido >= 0 && codigoEscolhido < arquivos.size()) {
-                    linhaEscolhida = arquivos.get(codigoEscolhido);
+                    despachaDados.add(String.valueOf(codigoEscolhido));
+                    despachaDados.add(arquivos.get(codigoEscolhido));
+                    linhaEscolhida = true;
                 }
             }
 
@@ -129,7 +139,7 @@ public class linhas {
             utilidades.divisorConsole();
             System.out.println("Linha selecionada [" + partida + " -> " + destino + "]");
 
-            return linhaEscolhida;
+            return despachaDados;
 
         } catch (IOException e) {
             return null;

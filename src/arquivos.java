@@ -74,6 +74,17 @@ public class arquivos {
         }
     }
 
+    public static boolean guardaDados(List<String> linha) {
+        int posicao;
+        String dadosArquivo = null;
+        for (posicao = 0; posicao < linha.size(); posicao++) {
+            if (posicao == (linha.size() - 1)) {
+                System.out.println("ultimo");
+            }
+        }
+        return true;
+    }
+
     /**
      * Cria um arquivo
      * 
