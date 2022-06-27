@@ -70,7 +70,7 @@ public class main {
 
         // TESTE MENU CONFIRMAR - OK
         // ----------------------------------------------------------
-        // boolean test = menu.confirmarAcao("titulo", "descricao");
+        // boolean test = menu.confirmar("titulo", "descricao");
         // System.out.println(test);
 
         // TESTE PROCURAR ARQUIVOS - OK

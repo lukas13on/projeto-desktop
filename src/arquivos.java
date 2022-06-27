@@ -66,23 +66,12 @@ public class arquivos {
     public static boolean escreverArquivo(String nomeArquivo, String dadosArquivo) throws Exception {
         try {
             FileWriter escritora = new FileWriter(nomeArquivo);
-            escritora.write(dadosArquivo);
+            escritora.write(dadosArquivo, 0, dadosArquivo.length());
             escritora.close();
             return true;
         } catch (IOException e) {
             return false;
         }
-    }
-
-    public static boolean guardaDados(List<String> linha) {
-        int posicao;
-        String dadosArquivo = null;
-        for (posicao = 0; posicao < linha.size(); posicao++) {
-            if (posicao == (linha.size() - 1)) {
-                System.out.println("ultimo");
-            }
-        }
-        return true;
     }
 
     /**
@@ -154,5 +143,18 @@ public class arquivos {
             return null;
         }
     }
+
+    public static String toCSV(String[] array) {
+        String result = "";
+        if (array.length > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (String s : array) {
+                sb.append(s).append(",");
+            }
+            result = sb.deleteCharAt(sb.length() - 1).toString();
+        }
+        return result;
+    }
+
 
 }

@@ -22,18 +22,16 @@ public class onibus {
 
     public static String escolherAssento() throws Exception {
         try {
-            utilidades.limparConsole(0);
-            List<String> escolhaLinha = linhas.escolherLinha();
-            int codLinha = Integer.parseInt(escolhaLinha.get(0));
-            String arquivoLinha = escolhaLinha.get(1);
-            System.out.println(codLinha);
-            System.out.println(arquivoLinha);
-            /**
-             * if (true) {
-             * return null;
-             * }
-             */
-            File arquivo = new File(arquivoLinha);
+            menu.limpar(0);
+            List<String> linhaEscolhida = linhas.escolherLinha();
+
+            int codLinha = Integer.parseInt(linhaEscolhida.get(0));
+            String nomeArquivoLinha = linhaEscolhida.get(1);
+
+            // System.out.println(codLinha);
+            // System.out.println(nomeArquivoLinha);
+
+            File arquivo = new File(nomeArquivoLinha);
             Scanner entrada = new Scanner(System.in);
             Scanner dados = new Scanner(arquivo);
             int posicao;
@@ -43,10 +41,18 @@ public class onibus {
             int assentoEscolhido = -1;
             int horarioEscolhido = -1;
             String assento;
-            List<String> linhas = new ArrayList<String>();
+            String linhasArray[];
             String assentos[];
             String linhaAlterada = null;
             String assentoAlterado = null;
+            String dadosLinhaAlterada = "";
+            boolean linhaSalva = false;
+            boolean linhaConfirmacao = false;
+            String textoConfirmacao;
+            String tituloConfirmacao;
+            List<String> linhas = new ArrayList<String>();
+            List<String> horariosLinhas = new ArrayList<String>();
+            List<String> assentosLinhas = new ArrayList<String>();
 
             dados.useDelimiter("\n");
 
@@ -56,69 +62,85 @@ public class onibus {
 
             while (dados.hasNext()) {
                 String linha = dados.next();
+                linha = linha.trim();
+                // ignora linhas vazias
+                if (linha == "" || linha == null) {
+                    continue;
+                }
+                // System.out.println("Linha: " + linha);
                 linhas.add(linha);
             }
 
-            utilidades.divisorConsole();
-            utilidades.tituloConsole("Escolha um horario");
-            utilidades.divisorConsole();
+            menu.divisor();
+            menu.titulo("Escolha um horario");
+            menu.divisor();
 
             for (posicao = 0; posicao < linhas.size(); posicao++) {
+
                 String linha = linhas.get(posicao);
                 String campos[] = linha.split(",");
                 horarioLinha = campos[0];
                 assentosLinha = campos[1];
+                horariosLinhas.add(horarioLinha);
+                assentosLinhas.add(assentosLinha);
+
                 System.out.println(" | " + posicao + " | " + horarioLinha);
+
             }
 
-            utilidades.divisorConsole();
+            menu.divisor();
 
             while (horarioEscolhido == -1) {
-                System.out.println("Informe o código horario:");
+                menu.pergunta("Informe o código horario:");
                 horarioEscolhido = entrada.nextInt();
                 if (horarioEscolhido < 0 || horarioEscolhido > linhas.size()) {
                     horarioEscolhido = -1;
                 }
                 if (horarioEscolhido != -1) {
-                    utilidades.divisorConsole();
-                    String campos[] = linhas.get(horarioEscolhido).split(",");
-                    horario = horarioLinha = campos[0];
+                    menu.divisor();
+                    horario = horariosLinhas.get(horarioEscolhido);
+                    assentosLinha = assentosLinhas.get(horarioEscolhido);
                 }
             }
 
-            System.out.println("Horario selecionado [" + horario + "]");
+            menu.resposta("Horario selecionado [" + horario + "]");
 
-            utilidades.divisorConsole();
-            utilidades.tituloConsole("Escolha um assento");
-            utilidades.divisorConsole();
+            menu.limpar(0);
+
+            menu.divisor();
+            menu.titulo("Escolha um assento");
+            menu.divisor();
 
             assentos = assentosLinha.split("\\.");
             // System.out.println(assentos);
             for (posicao = 0; posicao < assentos.length; posicao++) {
                 // ocupa os assentos pra
-                if (posicao == 4 || posicao == 7) {
-                    assentos[posicao] = "1";
-                }
+                /*
+                 * if (posicao == 4 || posicao == 7) {
+                 * assentos[posicao] = "1";
+                 * }
+                 */
             }
 
             for (posicao = 0; posicao < assentos.length; posicao++) {
                 assento = assentos[posicao];
+                // System.out.println(assento);
                 String pos = Integer.toString(posicao);
                 String assentoCodigo = posicao >= 10 ? pos : "0" + pos;
                 String estado = onibus.assentoVago(assento) ? "Vago  " : "Ocupado";
                 System.out.println("| " + assentoCodigo + " | " + estado);
             }
 
-            utilidades.divisorConsole();
+            menu.divisor();
 
             while (assentoEscolhido == -1) {
-                System.out.println("Informe o código do assento:");
+                menu.pergunta("Informe o código do assento:");
                 assentoEscolhido = entrada.nextInt();
                 if (assentoEscolhido >= 0 && assentoEscolhido < assentos.length) {
                     assento = assentos[assentoEscolhido];
                     if (onibus.assentoOcupado(assento)) {
+                        menu.erro("Assento ocupado [" + assentoEscolhido + "]");
                         assentoEscolhido = -1;
-                        System.out.println("Assento ocupado: [" + assentoEscolhido + "]");
                     } else {
                         assentos[assentoEscolhido] = "1";
                     }
@@ -127,23 +149,46 @@ public class onibus {
                 }
             }
 
-            System.out.println("Escolhido: " + assentoEscolhido);
-            utilidades.divisorConsole();
+            menu.limpar(0);
+            menu.divisor();
 
             assentoAlterado = String.join(".", assentos);
             linhaAlterada = horario + "," + assentoAlterado;
 
-            utilidades.divisorConsole();
+            menu.divisor();
             System.out.println(linhaAlterada);
-            utilidades.divisorConsole();
-
-            int test[] = { 0, 0, 0, 1, 0, 1, 1 };
+            menu.divisor();
 
             linhas.set(codLinha, linhaAlterada);
 
-            for (String linha : linhas) {
-                System.out.println(linha);
+            linhasArray = new String[linhas.size()];
+            linhasArray = linhas.toArray(linhasArray);
+            dadosLinhaAlterada = String.join(System.lineSeparator(), linhasArray);
+
+            textoConfirmacao = "Deseja reservar o assento [" + assentoEscolhido + "]";
+            tituloConfirmacao = "Confirmar reserva de assento";
+            linhaConfirmacao = menu.confirmar(tituloConfirmacao, textoConfirmacao);
+
+            menu.divisor();
+            menu.limpar(0);
+
+            if (linhaConfirmacao) {
+                linhaSalva = arquivos.escreverArquivo(nomeArquivoLinha, dadosLinhaAlterada);
+                if (linhaSalva) {
+                    menu.resposta("Passagem reservada");
+                } else {
+                    menu.erro("Falha sistema de arquivos.");
+                }
+            } else {
+                menu.erro("Reserva cancelada");
             }
+
+            menu.divisor();
+            menu.texto("Voltando ao menu de reservas [...]");
+            menu.aguardar(3);
+            menu.limpar(0);
+
+            onibus.escolherAssento();
 
             // System.out.println(dadosLinha);
             return null;

@@ -24,12 +24,12 @@ public class linhas {
             System.out.println("Informe um nome para a linha de destino:");
             nomeLinhaPartida = entrada.next();
 
-            utilidades.divisorConsole();
+            menu.divisor();
 
             System.out.println("Informe um nome para a linha de destino:");
             nomeLinhaDestino = entrada.next();
 
-            utilidades.divisorConsole();
+            menu.divisor();
 
             nomeLimpo = nomeLinhaPartida + "-" + nomeLinhaDestino;
             nomeLimpo = nomeLimpo.trim().toLowerCase();
@@ -41,35 +41,16 @@ public class linhas {
 
             if (!linhaExiste) {
                 linhaExiste = arquivos.criarArquivo(nomeLinhaArquivo, "");
-                utilidades.limparConsole(0);
+                menu.limpar(0);
             } else {
                 linhaExiste = false;
                 System.out.println("Essa linha já existe.");
-                utilidades.limparConsole(3);
+                menu.limpar(3);
             }
 
         }
 
         return true;
-    }
-
-    public static int escolhaLinha() {
-        Scanner entrada = new Scanner(System.in);
-        System.out.println("Digite a linha desejada: ");
-        int linha = entrada.nextInt();
-        switch (linha) {
-            case 0:
-                System.out.println("Linha escolhida = 1");
-                break;
-            case 1:
-                System.out.println("Linha escolhida = 2");
-                break;
-            default:
-                System.out.println("LINHA DESCONHECIDA");
-                break;
-        }
-        entrada.close();
-        return linha;
     }
 
     /**
@@ -95,13 +76,11 @@ public class linhas {
             List<String> despachaDados = new ArrayList<String>();
             int posicao;
 
-            utilidades.limparConsole(0);
+            menu.limpar(0);
 
-            utilidades.divisorConsole();
-            System.out.println("Bem vindo ao sistema");
-            utilidades.divisorConsole();
-            utilidades.tituloConsole("Escolha uma linha");
-            utilidades.divisorConsole();
+            menu.divisor();
+            menu.titulo("Escolha uma linha");
+            menu.divisor();
 
             for (posicao = 0; posicao < arquivos.size(); posicao++) {
                 String nomeArquivo = arquivos.get(posicao).split(Pattern.quote("\\"))[1];
@@ -120,11 +99,11 @@ public class linhas {
 
                 System.out.println(" | " + linhaCodigo + " | " + partida + " - " + destino);
 
-                utilidades.divisorConsole();
+                menu.divisor();
             }
 
             while (!linhaEscolhida) {
-                System.out.println("Informe o código da linha:");
+                // System.out.println("Informe o código da linha:");
                 codigoEscolhido = entrada.nextInt();
 
                 if (codigoEscolhido >= 0 && codigoEscolhido < arquivos.size()) {
@@ -136,8 +115,10 @@ public class linhas {
 
             partida = partidas.get(codigoEscolhido);
             destino = destinos.get(codigoEscolhido);
-            utilidades.divisorConsole();
-            System.out.println("Linha selecionada [" + partida + " -> " + destino + "]");
+
+            menu.divisor();
+            menu.resposta("[" + partida + " -> " + destino + "]");
+            menu.limpar(0);
 
             return despachaDados;
 
