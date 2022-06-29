@@ -27,6 +27,8 @@ public class onibus {
 
             int codLinha = Integer.parseInt(linhaEscolhida.get(0));
             String nomeArquivoLinha = linhaEscolhida.get(1);
+            String partida = linhaEscolhida.get(2);
+            String destino = linhaEscolhida.get(3);
 
             // System.out.println(codLinha);
             // System.out.println(nomeArquivoLinha);
@@ -74,6 +76,8 @@ public class onibus {
             menu.divisor();
             menu.titulo("Escolha um horario");
             menu.divisor();
+            menu.resposta("Percurso: " + partida + " para " + destino);
+            menu.divisor();
 
             for (posicao = 0; posicao < linhas.size(); posicao++) {
 
@@ -103,28 +107,21 @@ public class onibus {
                 }
             }
 
-            menu.resposta("Horario selecionado [" + horario + "]");
+            // menu.resposta("Horario selecionado [" + horario + "]");
 
             menu.limpar(0);
 
             menu.divisor();
             menu.titulo("Escolha um assento");
             menu.divisor();
+            menu.resposta("Percurso: " + partida + " para " + destino);
+            menu.resposta("Horario: " + horario);
+            menu.divisor();
 
             assentos = assentosLinha.split("\\.");
-            // System.out.println(assentos);
-            for (posicao = 0; posicao < assentos.length; posicao++) {
-                // ocupa os assentos pra
-                /*
-                 * if (posicao == 4 || posicao == 7) {
-                 * assentos[posicao] = "1";
-                 * }
-                 */
-            }
 
             for (posicao = 0; posicao < assentos.length; posicao++) {
                 assento = assentos[posicao];
-                // System.out.println(assento);
                 String pos = Integer.toString(posicao);
                 String assentoCodigo = posicao >= 10 ? pos : "0" + pos;
                 String estado = onibus.assentoVago(assento) ? "Vago  " : "Ocupado";
@@ -165,7 +162,9 @@ public class onibus {
             linhasArray = linhas.toArray(linhasArray);
             dadosLinhaAlterada = String.join(System.lineSeparator(), linhasArray);
 
-            textoConfirmacao = "Deseja reservar o assento [" + assentoEscolhido + "]";
+            textoConfirmacao = "Percurso: " + partida + " para " + destino + System.lineSeparator();
+            textoConfirmacao = textoConfirmacao + "Horario: " + horario;
+
             tituloConfirmacao = "Confirmar reserva de assento";
             linhaConfirmacao = menu.confirmar(tituloConfirmacao, textoConfirmacao);
 

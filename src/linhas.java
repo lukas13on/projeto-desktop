@@ -18,34 +18,41 @@ public class linhas {
             String nomeLinhaDestino = "";
             String nomeLinhaArquivo = "";
             String nomeLimpo = "";
+            String textoConfirmacao = "";
+            String tituloConfirmacao = "";
 
-            System.out.println("------------CADASTRO-DE-LINHAS----------");
-
-            System.out.println("Informe um nome para a linha de destino:");
-            nomeLinhaPartida = entrada.next();
-
+            menu.limpar(0);
             menu.divisor();
-
-            System.out.println("Informe um nome para a linha de destino:");
+            menu.titulo("Cadastro de nova linha");
+            menu.divisor();
+            menu.pergunta("Informe o local de partida:");
+            nomeLinhaPartida = entrada.next();
+            menu.pergunta("Informe o local de destino:");
             nomeLinhaDestino = entrada.next();
 
-            menu.divisor();
-
             nomeLimpo = nomeLinhaPartida + "-" + nomeLinhaDestino;
-            nomeLimpo = nomeLimpo.trim().toLowerCase();
+            nomeLimpo = nomeLimpo.trim().toLowerCase().replace(" ", "_");
 
             nomeLinhaArquivo += arquivos.pastaBase;
             nomeLinhaArquivo += nomeLimpo + ".csv";
 
             linhaExiste = arquivos.existeArquivo(nomeLinhaArquivo);
 
-            if (!linhaExiste) {
-                linhaExiste = arquivos.criarArquivo(nomeLinhaArquivo, "");
-                menu.limpar(0);
-            } else {
-                linhaExiste = false;
-                System.out.println("Essa linha já existe.");
-                menu.limpar(3);
+            textoConfirmacao = "Percurso: " + nomeLinhaPartida + " para " + nomeLinhaDestino + System.lineSeparator();
+
+            tituloConfirmacao = "Confirmar cadastro de linha";
+            Boolean confirmouRegistro = menu.confirmar(tituloConfirmacao, textoConfirmacao);
+
+            if (confirmouRegistro) {
+                if (!linhaExiste) {
+                    linhaExiste = arquivos.criarArquivo(nomeLinhaArquivo, "");
+                    menu.limpar(0);
+                } else {
+                    linhaExiste = false;
+                    menu.limpar(0);
+                    menu.erro("Essa linha já foi registrada.");
+                    menu.limpar(3);
+                }
             }
 
         }
@@ -81,6 +88,8 @@ public class linhas {
             menu.divisor();
             menu.titulo("Escolha uma linha");
             menu.divisor();
+            System.out.println(" | Código | Partida | Destino");
+            menu.divisor();
 
             for (posicao = 0; posicao < arquivos.size(); posicao++) {
                 String nomeArquivo = arquivos.get(posicao).split(Pattern.quote("\\"))[1];
@@ -95,23 +104,25 @@ public class linhas {
                 destinos.add(destino);
 
                 String lin = Integer.toString(posicao);
-                String linhaCodigo = posicao >= 10 ? lin : "0" + lin;
 
-                System.out.println(" | " + linhaCodigo + " | " + partida + " - " + destino);
-
-                menu.divisor();
+                System.out.println(" | " + lin + " | " + partida + " | " + destino);
             }
 
+            menu.divisor();
+
             while (!linhaEscolhida) {
-                // System.out.println("Informe o código da linha:");
+                menu.pergunta("Informe o código da linha:");
                 codigoEscolhido = entrada.nextInt();
 
                 if (codigoEscolhido >= 0 && codigoEscolhido < arquivos.size()) {
-                    despachaDados.add(String.valueOf(codigoEscolhido));
-                    despachaDados.add(arquivos.get(codigoEscolhido));
                     linhaEscolhida = true;
                 }
             }
+
+            despachaDados.add(String.valueOf(codigoEscolhido));
+            despachaDados.add(arquivos.get(codigoEscolhido));
+            despachaDados.add(partidas.get(codigoEscolhido));
+            despachaDados.add(destinos.get(codigoEscolhido));
 
             partida = partidas.get(codigoEscolhido);
             destino = destinos.get(codigoEscolhido);

@@ -83,6 +83,7 @@ public class main {
         // ----------------------------------------------------------
         // String linha = linhas.pegaLinhas();
         // System.out.println(linha);
-        onibus.escolherAssento();
+        // onibus.escolherAssento();
+        menu.opcoes();
     }
 }

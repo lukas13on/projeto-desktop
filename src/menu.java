@@ -161,4 +161,43 @@ public class menu {
         System.out.flush();
     }
 
+    public static void opcoes() throws Exception {
+        int posicao;
+        String opcao;
+        int codOpcao = -1;
+        Scanner entrada = new Scanner(System.in);
+        String opcoes[] = { "Consulta", "Reserva", "Nova linha" };
+
+        menu.limpar(0);
+        menu.divisor();
+        menu.titulo("Escolha uma opção");
+        menu.divisor();
+
+        for (posicao = 0; posicao < opcoes.length; posicao++) {
+            opcao = opcoes[posicao];
+            System.out.println(" | " + posicao + " | " + opcao);
+        }
+
+        while (codOpcao == -1) {
+            codOpcao = entrada.nextInt();
+            switch (codOpcao) {
+                case 0:
+                    menu.limpar(0);
+                    System.out.println("opção nao desenvolvida...");
+                    menu.aguardar(3);
+                    menu.opcoes();
+                    break;
+                case 1:
+                    onibus.escolherAssento();
+                    break;
+                case 2:
+                    linhas.criarLinha();
+                    break;
+                default:
+                    menu.erro("Opção nao suportada.");
+            }
+        }
+
+    }
+
 }
