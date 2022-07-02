@@ -23,7 +23,13 @@ public class onibus {
     public static String escolherAssento(boolean reservar) throws Exception {
         try {
             menu.limpar(0);
-            List<String> linhaEscolhida = linhas.escolherLinha();
+            String tipo;
+            if (reservar) {
+                tipo = "reservar";
+            } else {
+                tipo = "cancelar";
+            }
+            List<String> linhaEscolhida = linhas.escolherLinha(tipo);
 
             int codLinha = Integer.parseInt(linhaEscolhida.get(0));
             String nomeArquivoLinha = linhaEscolhida.get(1);
@@ -58,14 +64,17 @@ public class onibus {
             String textoSucesso;
             String textoFalha;
             String textoCancelado;
+            String cabecalho;
 
             if (reservar) {
+                cabecalho = "Reserva de assento";
                 tituloConfirmacao = "Confirmar reserva de assento";
                 textoCancelado = "Ação cancelada: reserva de assento";
                 textoConfirmacao = "Assento reservado";
                 textoFalha = "Falha ao reservar assento";
                 textoSucesso = "Assento reservado com sucesso";
             } else {
+                cabecalho = "Cancelar reserva";
                 tituloConfirmacao = "Cancelar reserva de assento";
                 textoCancelado = "Ação cancelada: cancelamento de reserva";
                 textoConfirmacao = "Reserva cancelada";
@@ -90,7 +99,7 @@ public class onibus {
                 linhas.add(linha);
             }
 
-            menu.divisor();
+            menu.cabecalho(cabecalho);
             menu.titulo("Escolha um horario");
             menu.divisor();
             menu.resposta("Percurso: " + partida + " para " + destino);
@@ -128,7 +137,7 @@ public class onibus {
 
             menu.limpar(0);
 
-            menu.divisor();
+            menu.cabecalho(cabecalho);
             menu.titulo("Escolha um assento");
             menu.divisor();
             menu.resposta("Percurso: " + partida + " para " + destino);

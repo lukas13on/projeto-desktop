@@ -68,7 +68,7 @@ public class linhas {
      * @throws IOException
      * @throws InterruptedException
      */
-    public static List<String> escolherLinha() throws IOException, InterruptedException {
+    public static List<String> escolherLinha(String tipo) throws IOException, InterruptedException {
         try {
 
             Scanner entrada = new Scanner(System.in);
@@ -83,10 +83,20 @@ public class linhas {
             String destino = null;
             List<String> despachaDados = new ArrayList<String>();
             int posicao;
+            String cabecalho;
+
+            if (utilidades.textoIgual(tipo, "reservar")) {
+                cabecalho = "Reserva de assento";
+            } else if (utilidades.textoIgual(tipo, "cancelar")) {
+                cabecalho = "Cancelamento de reserva";
+            } else if (utilidades.textoIgual(tipo, "consulta")) {
+                cabecalho = "Consulta de linhas";
+            } else {
+                cabecalho = "Menu desconhecido";
+            }
 
             menu.limpar(0);
-
-            menu.divisor();
+            menu.cabecalho(cabecalho);
             menu.titulo("Escolha uma linha");
             menu.divisor();
             System.out.println(" | Código | Partida | Destino");
@@ -143,7 +153,7 @@ public class linhas {
     public static void consultaLinhas() throws Exception {
         try {
             menu.limpar(0);
-            List<String> linhaEscolhida = linhas.escolherLinha();
+            List<String> linhaEscolhida = linhas.escolherLinha("consulta");
 
             int codLinha = Integer.parseInt(linhaEscolhida.get(0));
             String nomeArquivoLinha = linhaEscolhida.get(1);
