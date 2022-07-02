@@ -161,15 +161,23 @@ public class menu {
         System.out.flush();
     }
 
+    public static void cabecalho(String texto) {
+        menu.divisor();
+        System.out.print(RESET);
+        System.out.println(CYAN_BOLD + texto);
+        System.out.print(RESET);
+        menu.divisor();
+    }
+
     public static void opcoes() throws Exception {
         int posicao;
         String opcao;
         int codOpcao = -1;
         Scanner entrada = new Scanner(System.in);
-        String opcoes[] = { "Consulta", "Reserva", "Nova linha" };
+        String opcoes[] = { "Consulta", "Reserva", "Cancelar reserva", "Nova linha [beta]" };
 
         menu.limpar(0);
-        menu.divisor();
+        menu.cabecalho("Menu principal");
         menu.titulo("Escolha uma opção");
         menu.divisor();
 
@@ -182,15 +190,15 @@ public class menu {
             codOpcao = entrada.nextInt();
             switch (codOpcao) {
                 case 0:
-                    menu.limpar(0);
-                    System.out.println("opção nao desenvolvida...");
-                    menu.aguardar(3);
-                    menu.opcoes();
+                    linhas.consultaLinhas();
                     break;
                 case 1:
-                    onibus.escolherAssento();
+                    onibus.escolherAssento(true);
                     break;
                 case 2:
+                    onibus.escolherAssento(false);
+                    break;
+                case 3:
                     linhas.criarLinha();
                     break;
                 default:

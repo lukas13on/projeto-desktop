@@ -2,6 +2,9 @@ import src.onibus;
 import src.utilidades;
 import src.linhas;
 import src.menu;
+
+import java.util.Scanner;
+
 import src.arquivos;
 
 public class main {
@@ -85,5 +88,6 @@ public class main {
         // System.out.println(linha);
         // onibus.escolherAssento();
         menu.opcoes();
+
     }
 }

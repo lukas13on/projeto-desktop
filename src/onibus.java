@@ -20,7 +20,7 @@ public class onibus {
         return onibus.assentoVago(assento) ? false : true;
     }
 
-    public static String escolherAssento() throws Exception {
+    public static String escolherAssento(boolean reservar) throws Exception {
         try {
             menu.limpar(0);
             List<String> linhaEscolhida = linhas.escolherLinha();
@@ -51,10 +51,27 @@ public class onibus {
             boolean linhaSalva = false;
             boolean linhaConfirmacao = false;
             String textoConfirmacao;
-            String tituloConfirmacao;
             List<String> linhas = new ArrayList<String>();
             List<String> horariosLinhas = new ArrayList<String>();
             List<String> assentosLinhas = new ArrayList<String>();
+            String tituloConfirmacao;
+            String textoSucesso;
+            String textoFalha;
+            String textoCancelado;
+
+            if (reservar) {
+                tituloConfirmacao = "Confirmar reserva de assento";
+                textoCancelado = "Ação cancelada: reserva de assento";
+                textoConfirmacao = "Assento reservado";
+                textoFalha = "Falha ao reservar assento";
+                textoSucesso = "Assento reservado com sucesso";
+            } else {
+                tituloConfirmacao = "Cancelar reserva de assento";
+                textoCancelado = "Ação cancelada: cancelamento de reserva";
+                textoConfirmacao = "Reserva cancelada";
+                textoFalha = "Falha ao cancelar reserva";
+                textoSucesso = "Reserva cancelada com sucesso";
+            }
 
             dados.useDelimiter("\n");
 
@@ -135,11 +152,20 @@ public class onibus {
                 assentoEscolhido = entrada.nextInt();
                 if (assentoEscolhido >= 0 && assentoEscolhido < assentos.length) {
                     assento = assentos[assentoEscolhido];
-                    if (onibus.assentoOcupado(assento)) {
-                        menu.erro("Assento ocupado [" + assentoEscolhido + "]");
-                        assentoEscolhido = -1;
+                    if (reservar) {
+                        if (onibus.assentoOcupado(assento)) {
+                            menu.erro("Assento reservado [" + assentoEscolhido + "]");
+                            assentoEscolhido = -1;
+                        } else {
+                            assentos[assentoEscolhido] = "1";
+                        }
                     } else {
-                        assentos[assentoEscolhido] = "1";
+                        if (onibus.assentoVago(assento)) {
+                            menu.erro("Assento vago [" + assentoEscolhido + "]");
+                            assentoEscolhido = -1;
+                        } else {
+                            assentos[assentoEscolhido] = "0";
+                        }
                     }
                 } else {
                     assentoEscolhido = -1;
@@ -165,7 +191,8 @@ public class onibus {
             textoConfirmacao = "Percurso: " + partida + " para " + destino + System.lineSeparator();
             textoConfirmacao = textoConfirmacao + "Horario: " + horario;
 
-            tituloConfirmacao = "Confirmar reserva de assento";
+            tituloConfirmacao = tituloConfirmacao + ": " + assentoEscolhido;
+
             linhaConfirmacao = menu.confirmar(tituloConfirmacao, textoConfirmacao);
 
             menu.divisor();
@@ -174,20 +201,20 @@ public class onibus {
             if (linhaConfirmacao) {
                 linhaSalva = arquivos.escreverArquivo(nomeArquivoLinha, dadosLinhaAlterada);
                 if (linhaSalva) {
-                    menu.resposta("Passagem reservada");
+                    menu.resposta(textoSucesso);
                 } else {
-                    menu.erro("Falha sistema de arquivos.");
+                    menu.erro(textoFalha);
                 }
             } else {
-                menu.erro("Reserva cancelada");
+                menu.erro(textoCancelado);
             }
 
             menu.divisor();
-            menu.texto("Voltando ao menu de reservas [...]");
+            menu.texto("Voltando ao menu de opções [...]");
             menu.aguardar(3);
             menu.limpar(0);
 
-            onibus.escolherAssento();
+            menu.opcoes();
 
             // System.out.println(dadosLinha);
             return null;
