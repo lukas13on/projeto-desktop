@@ -9,53 +9,127 @@ import java.util.regex.Pattern;
 
 public class linhas {
 
+    public static Integer maximoHorarios = 50;
+
+    public static String gerarAssentos(Integer quantidade) {
+        String resultado = "";
+        for (Integer x = 0; x < quantidade; x++) {
+            if (x == (quantidade - 1)) {
+                resultado = resultado + "0";
+            } else {
+                resultado = resultado + "0.";
+            }
+        }
+        return resultado;
+    }
+
+    public static String gerarDadosLinha(List<String> horarios, List<Integer> assentos) {
+        List<String> linhasArquivo = new ArrayList<String>();
+        String dados = "";
+        for (Integer x = 0; x < horarios.size(); x++) {
+            String linha = "";
+            linha = linha + horarios.get(x) + "," + linhas.gerarAssentos(assentos.get(x));
+            linhasArquivo.add(linha);
+            // System.out.println(horarios.get(x));
+        }
+        for (String linha : linhasArquivo) {
+            dados = dados + linha + System.lineSeparator();
+        }
+        System.out.println(dados);
+        return dados;
+    }
+
     public static boolean criarLinha() throws Exception {
         Scanner entrada = new Scanner(System.in);
         Boolean linhaExiste = false;
+        Integer quantidadeHorarios = -1;
+        String nomeLinhaPartida = "";
+        String nomeLinhaDestino = "";
+        String nomeLinhaArquivo = "";
+        String nomeLimpo = "";
+        String textoConfirmacao = "";
+        String tituloConfirmacao = "";
+        String dataArquivo = "";
+        List<String> horarios = new ArrayList<String>();
+        List<Integer> assentos = new ArrayList<Integer>();
 
-        while (!linhaExiste) {
+        menu.limpar(0);
+        menu.divisor();
+        menu.titulo("Cadastro de nova linha");
+        menu.divisor();
+        menu.pergunta("Informe o local de partida:");
+        nomeLinhaPartida = entrada.next();
+        menu.pergunta("Informe o local de destino:");
+        nomeLinhaDestino = entrada.next();
 
-            String nomeLinhaPartida = "";
-            String nomeLinhaDestino = "";
-            String nomeLinhaArquivo = "";
-            String nomeLimpo = "";
-            String textoConfirmacao = "";
-            String tituloConfirmacao = "";
+        nomeLimpo = nomeLinhaPartida + "-" + nomeLinhaDestino;
+        nomeLimpo = nomeLimpo.trim().toLowerCase().replace(" ", "_");
 
-            menu.limpar(0);
-            menu.divisor();
-            menu.titulo("Cadastro de nova linha");
-            menu.divisor();
-            menu.pergunta("Informe o local de partida:");
-            nomeLinhaPartida = entrada.next();
-            menu.pergunta("Informe o local de destino:");
-            nomeLinhaDestino = entrada.next();
+        nomeLinhaArquivo += arquivos.pastaBase;
+        nomeLinhaArquivo += nomeLimpo + ".csv";
 
-            nomeLimpo = nomeLinhaPartida + "-" + nomeLinhaDestino;
-            nomeLimpo = nomeLimpo.trim().toLowerCase().replace(" ", "_");
+        linhaExiste = arquivos.existeArquivo(nomeLinhaArquivo);
 
-            nomeLinhaArquivo += arquivos.pastaBase;
-            nomeLinhaArquivo += nomeLimpo + ".csv";
+        textoConfirmacao = "Percurso: " + nomeLinhaPartida + " para " + nomeLinhaDestino + System.lineSeparator();
 
-            linhaExiste = arquivos.existeArquivo(nomeLinhaArquivo);
+        tituloConfirmacao = "Confirmar cadastro de linha";
+        Boolean confirmouRegistro = menu.confirmar(tituloConfirmacao, textoConfirmacao);
 
-            textoConfirmacao = "Percurso: " + nomeLinhaPartida + " para " + nomeLinhaDestino + System.lineSeparator();
+        if (confirmouRegistro) {
+            if (!linhaExiste) {
 
-            tituloConfirmacao = "Confirmar cadastro de linha";
-            Boolean confirmouRegistro = menu.confirmar(tituloConfirmacao, textoConfirmacao);
+                menu.limpar(0);
 
-            if (confirmouRegistro) {
-                if (!linhaExiste) {
-                    linhaExiste = arquivos.criarArquivo(nomeLinhaArquivo, "");
-                    menu.limpar(0);
-                } else {
-                    linhaExiste = false;
-                    menu.limpar(0);
-                    menu.erro("Essa linha já foi registrada.");
-                    menu.limpar(3);
+                while (quantidadeHorarios == -1) {
+                    menu.pergunta("Informe a quantidade de horarios:");
+                    quantidadeHorarios = entrada.nextInt();
+                    if (quantidadeHorarios < 0 || quantidadeHorarios > linhas.maximoHorarios) {
+                        quantidadeHorarios = -1;
+                    }
                 }
-            }
 
+                menu.divisor();
+
+                for (Integer x = 0; x < quantidadeHorarios; x++) {
+                    String horarioAtual = null;
+                    Integer assentosAtual = -1;
+                    while (horarioAtual == null) {
+                        menu.pergunta("Informe o horario (" + x + "/" + quantidadeHorarios + "):");
+                        horarioAtual = entrada.next();
+                        if (horarioAtual.length() <= 0) {
+                            horarioAtual = null;
+                        }
+                    }
+                    while (assentosAtual == -1) {
+                        menu.pergunta("Informe a quantidade de assentos (" + x + "/" + quantidadeHorarios + "):");
+                        assentosAtual = entrada.nextInt();
+                        if (assentosAtual < 0) {
+                            assentosAtual = -1;
+                        }
+                    }
+
+                    horarios.add(horarioAtual);
+                    assentos.add(assentosAtual);
+                    System.out.println(assentosAtual);
+                    System.out.println(horarioAtual);
+
+                    menu.divisor();
+                    // list.add();
+                }
+
+                String dados = linhas.gerarDadosLinha(horarios, assentos);
+                System.out.println(quantidadeHorarios);
+                linhaExiste = arquivos.criarArquivo(nomeLinhaArquivo, dados);
+                menu.limpar(0);
+            } else {
+                linhaExiste = false;
+                menu.limpar(0);
+                menu.erro("Essa linha já foi registrada.");
+                menu.limpar(3);
+                menu.opcoes();
+            }
+        } else {
+            menu.opcoes();
         }
 
         return true;
@@ -77,11 +151,12 @@ public class linhas {
             List<String> arquivos = src.arquivos.procurarArquivos(nomePasta, termo);
             List<String> partidas = new ArrayList<String>();
             List<String> destinos = new ArrayList<String>();
-            int codigoEscolhido = -1;
+            Integer codigoEscolhido = -1;
             Boolean linhaEscolhida = false;
             String partida = null;
             String destino = null;
             List<String> despachaDados = new ArrayList<String>();
+
             int posicao;
             String cabecalho;
 

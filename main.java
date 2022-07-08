@@ -10,8 +10,8 @@ import src.arquivos;
 public class main {
     public static void main(String[] args) throws Exception {
 
-        // int linha = linhas.escolhaLinha();
-        // int assento = onibus.escolhaAssento();
+        // Integer linha = linhas.escolhaLinha();
+        // Integer assento = onibus.escolhaAssento();
         // System.out.println("Assento escolhido" + assento);
 
         // TESTE EXISTE ARQUIVO - OK

@@ -31,7 +31,7 @@ public class onibus {
             }
             List<String> linhaEscolhida = linhas.escolherLinha(tipo);
 
-            int codLinha = Integer.parseInt(linhaEscolhida.get(0));
+            Integer codLinha = Integer.parseInt(linhaEscolhida.get(0));
             String nomeArquivoLinha = linhaEscolhida.get(1);
             String partida = linhaEscolhida.get(2);
             String destino = linhaEscolhida.get(3);
@@ -42,12 +42,12 @@ public class onibus {
             File arquivo = new File(nomeArquivoLinha);
             Scanner entrada = new Scanner(System.in);
             Scanner dados = new Scanner(arquivo);
-            int posicao;
+            Integer posicao;
             String horarioLinha = null;
             String assentosLinha = null;
             String horario = null;
-            int assentoEscolhido = -1;
-            int horarioEscolhido = -1;
+            Integer assentoEscolhido = -1;
+            Integer horarioEscolhido = -1;
             String assento;
             String linhasArray[];
             String assentos[];

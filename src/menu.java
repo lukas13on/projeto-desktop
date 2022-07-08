@@ -145,7 +145,7 @@ public class menu {
         System.out.print(RESET);
     }
 
-    public static void aguardar(int delaySegundos) throws InterruptedException {
+    public static void aguardar(Integer delaySegundos) throws InterruptedException {
         TimeUnit.SECONDS.sleep(delaySegundos);
     }
 
@@ -155,7 +155,7 @@ public class menu {
         System.out.print(RESET);
     }
 
-    public static void limpar(int delaySegundos) throws InterruptedException {
+    public static void limpar(Integer delaySegundos) throws InterruptedException {
         menu.aguardar(delaySegundos);
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -170,9 +170,9 @@ public class menu {
     }
 
     public static void opcoes() throws Exception {
-        int posicao;
+        Integer posicao;
         String opcao;
-        int codOpcao = -1;
+        Integer codOpcao = -1;
         Scanner entrada = new Scanner(System.in);
         String opcoes[] = { "Consulta", "Reserva", "Cancelar reserva", "Nova linha [beta]" };
 
