@@ -35,7 +35,7 @@ public class linhas {
         for (String linha : linhasArquivo) {
             dados = dados + linha + System.lineSeparator();
         }
-        System.out.println(dados);
+        // System.out.println(dados);
         return dados;
     }
 
@@ -70,65 +70,78 @@ public class linhas {
 
         linhaExiste = arquivos.existeArquivo(nomeLinhaArquivo);
 
-        textoConfirmacao = "Percurso: " + nomeLinhaPartida + " para " + nomeLinhaDestino + System.lineSeparator();
+        textoConfirmacao = "Percurso: " + nomeLinhaPartida + " para " + nomeLinhaDestino;
 
         tituloConfirmacao = "Confirmar cadastro de linha";
-        Boolean confirmouRegistro = menu.confirmar(tituloConfirmacao, textoConfirmacao);
 
-        if (confirmouRegistro) {
-            if (!linhaExiste) {
+        if (!linhaExiste) {
 
-                menu.limpar(0);
+            menu.limpar(0);
 
-                while (quantidadeHorarios == -1) {
-                    menu.pergunta("Informe a quantidade de horarios:");
-                    quantidadeHorarios = entrada.nextInt();
-                    if (quantidadeHorarios < 0 || quantidadeHorarios > linhas.maximoHorarios) {
-                        quantidadeHorarios = -1;
+            menu.divisor();
+            menu.titulo("Cadastro de nova linha");
+            menu.divisor();
+
+            while (quantidadeHorarios == -1) {
+                menu.pergunta("Informe a quantidade de horarios:");
+                quantidadeHorarios = entrada.nextInt();
+                if (quantidadeHorarios < 0 || quantidadeHorarios > linhas.maximoHorarios) {
+                    quantidadeHorarios = -1;
+                }
+            }
+
+            menu.divisor();
+
+            for (Integer x = 0; x < quantidadeHorarios; x++) {
+                String horarioAtual = null;
+                Integer assentosAtual = -1;
+                while (horarioAtual == null) {
+                    menu.pergunta("Informe o horario (" + x + "/" + quantidadeHorarios + "):");
+                    horarioAtual = entrada.next();
+                    if (horarioAtual.length() <= 0) {
+                        horarioAtual = null;
                     }
                 }
+                while (assentosAtual == -1) {
+                    menu.pergunta("Informe a quantidade de assentos (" + x + "/" + quantidadeHorarios + "):");
+                    assentosAtual = entrada.nextInt();
+                    if (assentosAtual < 0) {
+                        assentosAtual = -1;
+                    }
+                }
+
+                horarios.add(horarioAtual);
+                assentos.add(assentosAtual);
+                System.out.println(assentosAtual);
+                System.out.println(horarioAtual);
 
                 menu.divisor();
+                // list.add();
+            }
 
-                for (Integer x = 0; x < quantidadeHorarios; x++) {
-                    String horarioAtual = null;
-                    Integer assentosAtual = -1;
-                    while (horarioAtual == null) {
-                        menu.pergunta("Informe o horario (" + x + "/" + quantidadeHorarios + "):");
-                        horarioAtual = entrada.next();
-                        if (horarioAtual.length() <= 0) {
-                            horarioAtual = null;
-                        }
-                    }
-                    while (assentosAtual == -1) {
-                        menu.pergunta("Informe a quantidade de assentos (" + x + "/" + quantidadeHorarios + "):");
-                        assentosAtual = entrada.nextInt();
-                        if (assentosAtual < 0) {
-                            assentosAtual = -1;
-                        }
-                    }
+            String dados = linhas.gerarDadosLinha(horarios, assentos);
+            // System.out.println(quantidadeHorarios);
 
-                    horarios.add(horarioAtual);
-                    assentos.add(assentosAtual);
-                    System.out.println(assentosAtual);
-                    System.out.println(horarioAtual);
+            textoConfirmacao = textoConfirmacao + System.lineSeparator();
+            textoConfirmacao = textoConfirmacao + quantidadeHorarios.toString() + " horario(s)";
 
-                    menu.divisor();
-                    // list.add();
-                }
+            Boolean confirmouRegistro = menu.confirmar(tituloConfirmacao, textoConfirmacao);
 
-                String dados = linhas.gerarDadosLinha(horarios, assentos);
-                System.out.println(quantidadeHorarios);
-                linhaExiste = arquivos.criarArquivo(nomeLinhaArquivo, dados);
+            if (confirmouRegistro) {
+                arquivos.criarArquivo(nomeLinhaArquivo, dados);
                 menu.limpar(0);
-            } else {
-                linhaExiste = false;
-                menu.limpar(0);
-                menu.erro("Essa linha já foi registrada.");
+                menu.resposta("Linha registrada com sucesso.");
                 menu.limpar(3);
                 menu.opcoes();
+            } else {
+                menu.opcoes();
             }
+
         } else {
+            linhaExiste = false;
+            menu.limpar(0);
+            menu.erro("Essa linha já foi registrada.");
+            menu.limpar(3);
             menu.opcoes();
         }
 
